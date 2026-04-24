@@ -54,24 +54,24 @@ You can use **Postman** or **cURL** to interact with the following endpoints.
 ## Coursework Conceptual Answers
 
 ### Part 1: Service Architecture
-*   **Resource Lifecycle:** JAX-RS resources are request-scoped by default, meaning a new instance is instantiated for every incoming request. While this prevents instance variables from crossing over between requests, the underlying in-memory storage must still use thread-safe data structures like ConcurrentHashMap. This prevents data loss and race conditions when multiple concurrent requests attempt to read or modify the shared state simultaneously.
-*   **HATEOAS Benefits:** Providing hypermedia links makes the API self-descriptive. It allows client developers to dynamically discover actions and navigate the API's relationships (like exploring a room's sensors) without hardcoding URLs or relying entirely on static documentation.
+1.  **Resource Lifecycle:** JAX-RS resources are request-scoped by default, meaning a new instance is instantiated for every incoming request. While this prevents instance variables from crossing over between requests, the underlying in-memory storage must still use thread-safe data structures like ConcurrentHashMap. This prevents data loss and race conditions when multiple concurrent requests attempt to read or modify the shared state simultaneously.
+2.  **HATEOAS Benefits:** Providing hypermedia links makes the API self-descriptive. It allows client developers to dynamically discover actions and navigate the API's relationships (like exploring a room's sensors) without hardcoding URLs or relying entirely on static documentation.
 
 ### Part 2: Room Management
-*   **IDs vs Full Objects:** Returning only IDs reduces the payload size, saving network bandwidth. However, returning full objects prevents the "N+1 request problem," saving the client from having to make multiple subsequent network calls to process or display the details of each room.
-*   **DELETE Idempotency:** The DELETE operation is strictly idempotent. If a client mistakenly sends the exact same DELETE request multiple times, the first request will delete the room (returning 204 No Content), and subsequent requests will simply return 404 Not Found. Crucially, the final state of the server remains the same: the room no longer exists.
+1.  **IDs vs Full Objects:** Returning only IDs reduces the payload size, saving network bandwidth. However, returning full objects prevents the "N+1 request problem," saving the client from having to make multiple subsequent network calls to process or display the details of each room.
+2.  **DELETE Idempotency:** The DELETE operation is strictly idempotent. If a client mistakenly sends the exact same DELETE request multiple times, the first request will delete the room (returning 204 No Content), and subsequent requests will simply return 404 Not Found. Crucially, the final state of the server remains the same: the room no longer exists.
 
 ### Part 3: Sensor Operations
-*   **Consumes Mismatch:** The explicit consumption of a media type is made through the use of the form of the method: @Consumes(MediaType.APPLICATION_JSON), we tell JAX-RS to accept only JSON payloads. Provided a client transmits text/plain or application/xml, the discrepancy would be intercepted by JAX-RS prior to the invocation of the method and an automatic error of 415 Unsupported Media Type would be returned by the HTTP.
-*   **Query vs Path Parameters:** Query parameters (?type=Temperature) are better to use as a filter as they are optional, composable and not determined by the hierarchical identity of the resource. Path parameters must be used to refer to a distinct resource identifier.
+1.  **Consumes Mismatch:** The explicit consumption of a media type is made through the use of the form of the method: @Consumes(MediaType.APPLICATION_JSON), we tell JAX-RS to accept only JSON payloads. Provided a client transmits text/plain or application/xml, the discrepancy would be intercepted by JAX-RS prior to the invocation of the method and an automatic error of 415 Unsupported Media Type would be returned by the HTTP.
+2.  **Query vs Path Parameters:** Query parameters (?type=Temperature) are better to use as a filter as they are optional, composable and not determined by the hierarchical identity of the resource. Path parameters must be used to refer to a distinct resource identifier.
 
 ### Part 4: Deep Nesting
-*   **Sub-Resource Locator Advantages:** It is the ability to delegate logic through sub-resource locators, which helps to ensure that a single controller class is not gigantic and unsupportable. It encourages the Single Responsibility Principle, where the nested SensorReadingResource will deal with its own logic without being dependent on the parent SensorResource.
+1.  **Sub-Resource Locator Advantages:** It is the ability to delegate logic through sub-resource locators, which helps to ensure that a single controller class is not gigantic and unsupportable. It encourages the Single Responsibility Principle, where the nested SensorReadingResource will deal with its own logic without being dependent on the parent SensorResource.
 
 ### Part 5: Error Handling & Logging
-*   **422 vs 404 Dependencies:** HTTP 422 (Unprocessable Entity) is more accurate than 404 (Not Found) in validating a payload. A 404 means the endpoint does not exist, but a 422 is right, there is an endpoint and syntax but a semantic error within the payload (e.g. a missing room reference).
-*   **Stack Trace Risks:** Java internal stack traces are a critical cybersecurity threat. Sensitive data that an attacker can collect includes the framework versions, internal file paths, database structures and logic flaws, and can be used in launching targeted attacks.
-*   **Logging Filters:** JAX-RS filters make cross-cutting concerns centralized. Rather than having to repeat Logger.info() in each and every method, the filter automatically monitors all traffic around the world.
+1.  **422 vs 404 Dependencies:** HTTP 422 (Unprocessable Entity) is more accurate than 404 (Not Found) in validating a payload. A 404 means the endpoint does not exist, but a 422 is right, there is an endpoint and syntax but a semantic error within the payload (e.g. a missing room reference).
+2.  **Stack Trace Risks:** Java internal stack traces are a critical cybersecurity threat. Sensitive data that an attacker can collect includes the framework versions, internal file paths, database structures and logic flaws, and can be used in launching targeted attacks.
+3.  **Logging Filters:** JAX-RS filters make cross-cutting concerns centralized. Rather than having to repeat Logger.info() in each and every method, the filter automatically monitors all traffic around the world.
 
 ---
 
