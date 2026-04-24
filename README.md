@@ -2,7 +2,7 @@
 
 This is a high-performance RESTful web service built using **JAX-RS (Jakarta REST)** and the **Grizzly Embedded HTTP Server**. It is designed to manage university campus resources, specifically Rooms and Sensors, with full support for historical data logging and complex error handling.
 
-## 🚀 How to Run the Project
+##  How to Run the Project
 1.  **Open NetBeans IDE**.
 2.  Go to `File` -> `Open Project` and select the **CSA** folder.
 3.  Wait for Maven to download the dependencies.
@@ -12,7 +12,7 @@ This is a high-performance RESTful web service built using **JAX-RS (Jakarta RES
 
 ---
 
-## 🛠️ API Documentation & Testing
+##  API Documentation & Testing
 You can use **Postman** or **cURL** to interact with the following endpoints.
 
 ### 1. Discovery & Metadata
@@ -42,7 +42,7 @@ You can use **Postman** or **cURL** to interact with the following endpoints.
 
 ---
 
-## 📝 Coursework Conceptual Answers
+##  Coursework Conceptual Answers
 
 ### Part 1: Service Architecture
 *   **Resource Lifecycle:** JAX-RS resources are **request-scoped** by default, meaning a new instance is instantiated for every incoming request. While this prevents instance variables from crossing over between requests, the underlying in-memory storage must still use thread-safe data structures like `ConcurrentHashMap`. This prevents data loss and race conditions when multiple concurrent requests attempt to read or modify the shared state simultaneously.
@@ -66,7 +66,7 @@ You can use **Postman** or **cURL** to interact with the following endpoints.
 
 ---
 
-## 💻 Sample cURL Commands
+##  Sample cURL Commands
 
 **1. Discovery:**
 `curl -X GET http://localhost:8080/api/v1`
@@ -85,7 +85,7 @@ You can use **Postman** or **cURL** to interact with the following endpoints.
 
 ---
 
-## 🏗️ Technology Stack
+##  Technology Stack
 *   **Language:** Java 17+
 *   **Framework:** Jersey (JAX-RS Implementation)
 *   **Server:** Grizzly (Embedded HTTP Container)
